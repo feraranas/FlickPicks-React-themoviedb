@@ -12,6 +12,13 @@ import {
 import { MovieContext } from 'contexts/MovieContext';
 
 const Home = () => {
+
+  // This calls the 'useContext' hook, which allows functional components to access the
+  // value provided by a context. It takes the 'MovieContext' as an argument, representing
+  // the context object that was created using 'createContext' in the parent component.
+
+  // '{ popularMovies, topRatedMovies, nowPlayingMovies }'
+  // This uses object destructuring syntax to extract specific values from the MovieContex
   const { popularMovies, topRatedMovies, nowPlayingMovies } = useContext(MovieContext); 
 
   return (

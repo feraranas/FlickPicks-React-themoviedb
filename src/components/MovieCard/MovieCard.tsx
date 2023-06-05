@@ -28,24 +28,9 @@ const MovieCard: React.FC<MovieCardProp> = ({
   const poster = "https://image.tmdb.org/t/p/w500" + path;
   const navigate = useNavigate();
   
-/*
   const getGenre = (genreIds: Array<any>) => {
     const allGenres = Object.values(genreIds);
-    const key: any = Object.keys(genres.genres).find(
-      (genre: any): boolean =>
-      allGenres.includes(genres.genres[genre].id)
-    );
-    
-    if (key) {
-      return genres.genres[key].name;
-    }
-    return "Not Classified";
-  };
-*/
-  const getGenre = (genreIds: Array<any>) => {
-    const allGenres = Object.values(genreIds);
-    const keys: any[] = Object.keys(genres.genres).filter(
-      (genre: any): boolean =>
+    const keys: any[] = Object.keys(genres.genres).filter((genre: any): boolean =>
       allGenres.includes(genres.genres[genre].id)
     );
 

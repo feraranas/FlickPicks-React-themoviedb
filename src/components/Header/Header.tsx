@@ -35,17 +35,22 @@ const navItems = [
 ];
 
 export default function Header(props: Props) {
+  
+  // The 'window' property from 'props' is extracted from the 'props' object
+  // using *destructuring assignment* and assigned to a variable of the same name.
   const { window } = props;
+  
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const handleDrawerToggle = () => {
+    // setMobileOpen is a state updater function from React Hooks 'useState' hook
     setMobileOpen((prevState) => !prevState);
   };
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
       <Typography variant="h6" sx={{ my: 2 }}>
-        MUI
+        FlickPicks
       </Typography>
       <Divider />
       <List>
@@ -60,12 +65,17 @@ export default function Header(props: Props) {
     </Box>
   );
 
-  const container =
-    window !== undefined ? () => window().document.body : undefined;
+  // If window is not 'undefined', the code assigns a function to 'container'
+  // using the arrow function syntax '() => window().document.body'
+  // This function is invoked when 'container' is called.
+  // It accesses the 'document' property of the 'window' (representing the DOM of the currently loaded web page)
+  // object and retrieves the 'body element'. 
+  const container = window !== undefined ? () => window().document.body : undefined;
 
   return (
     <BoxStyled>
       <CssBaseline />
+
       <AppBar component="nav">
         <Toolbar>
           <IconButton
@@ -95,6 +105,7 @@ export default function Header(props: Props) {
           </Box>
         </Toolbar>
       </AppBar>
+
       <Box component="nav">
         <Drawer
           container={container}
@@ -115,9 +126,11 @@ export default function Header(props: Props) {
           {drawer}
         </Drawer>
       </Box>
-      <Box component="main" sx={{ p: 3 }}>
+
+      <Box component="main" sx={{ p: 0 }}>
         <Toolbar />
       </Box>
+
     </BoxStyled>
   );
 }
