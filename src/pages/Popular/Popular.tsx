@@ -10,7 +10,7 @@ import {
   DivTitulo,
   Botones,
   SortByName,
-  SliderMovies,
+  MovieSlider,
   SortByCalification,
 } from "./styles";
 import SortByAlphaIcon from '@mui/icons-material/SortByAlpha';
@@ -31,24 +31,26 @@ const Popular = () => {
           </Botones>
         </Header>
         <Movies>
-          {popularMovies?.length > 0 ? (
-            popularMovies.map((movie) => (
-              <MovieCard
-                      key={movie.id}
-                      path={movie.poster_path}
-                      isAdult={movie.adult}
-                      title={movie.title}
-                      voteAverage={movie.vote_average}
-                      genreId={Object.values(movie.genre_ids)}
-                      movieId={movie.id}
-                      releaseDate={movie.release_date}
-                      voteCount={movie.vote_count}
-                      description={movie.overview}
-              />
-            ))
-          ) : (
-            <div>Cargando</div>
-          )}
+          <MovieSlider>
+            {popularMovies?.length > 0 ? (
+              popularMovies.map((movie) => (
+                <MovieCard
+                        key={movie.id}
+                        path={movie.poster_path}
+                        isAdult={movie.adult}
+                        title={movie.title}
+                        voteAverage={movie.vote_average}
+                        genreId={Object.values(movie.genre_ids)}
+                        movieId={movie.id}
+                        releaseDate={movie.release_date}
+                        voteCount={movie.vote_count}
+                        description={movie.overview}
+                />
+              ))
+            ) : (
+              <div>Cargando</div>
+            )}
+          </MovieSlider>
         </Movies>
       </BodyWrapper>
     </App>

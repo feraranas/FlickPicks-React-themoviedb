@@ -36,7 +36,8 @@ export const ShowsTitle = styled.div`
      margin-left: 30px;
      text-transform: uppercase;
      @media (max-width: 768px) {
-     text-align: center;
+          text-align: center;
+          justify-content: center;
      }
 `;
 
@@ -103,9 +104,16 @@ export const SortByCalification = styled.button`
 `;
 
 export const Movies = styled.div`
-     
+     display: flex;
+     justify-content: center;
+     width: 100%;
 `;
 
-export const SliderMovies = styled.div`
-     
+export const MovieSlider = styled.div`
+     flex-grow: 1;
+     text-align: center;
+     margin-left: 30px;
+     @media (max-width: 560px) {
+          margin-left: 60px;
+     }
 `;
