@@ -1,13 +1,13 @@
 import { MovieCard } from 'components/MovieCard';
 import React, {useContext} from 'react'
 import {
+  App,
   BodyWrapper,
-  Wrapper,
+  Header,
   ShowsTitle,
   Movies,
   Titulo,
   DivTitulo,
-  Fila,
   Botones,
   SortByName,
   SliderMovies,
@@ -21,36 +21,37 @@ const Popular = () => {
   const { popularMovies } = useContext(MovieContext);
 
   return (
-    <Wrapper>
-        <ShowsTitle>POPULAR</ShowsTitle>
-        <Botones>
-          <SortByName><SortByAlphaIcon fontSize='small' />Sort by Name</SortByName>
-          <SortByCalification><SortIcon fontSize='small' />Sort by Calification</SortByCalification>
-        </Botones>
-      
-      <Movies>
-        <SliderMovies>
-        {popularMovies?.length > 0 ? (
-          popularMovies.map((movie) => (
-            <MovieCard
-                    key={movie.id}
-                    path={movie.poster_path}
-                    isAdult={movie.adult}
-                    title={movie.title}
-                    voteAverage={movie.vote_average}
-                    genreId={Object.values(movie.genre_ids)}
-                    movieId={movie.id}
-                    releaseDate={movie.release_date}
-                    voteCount={movie.vote_count}
-                    description={movie.overview}
-            />
-          ))
-        ) : (
-          <div>Cargando</div>
-        )}
-        </SliderMovies>
-      </Movies>
-    </Wrapper>
+    <App>
+      <BodyWrapper>
+        <Header>
+          <ShowsTitle>POPULAR</ShowsTitle>
+          <Botones>
+            <SortByName><SortByAlphaIcon fontSize='small' />Sort by Name</SortByName>
+            <SortByCalification><SortIcon fontSize='small' />Sort by Calification</SortByCalification>
+          </Botones>
+        </Header>
+        <Movies>
+          {popularMovies?.length > 0 ? (
+            popularMovies.map((movie) => (
+              <MovieCard
+                      key={movie.id}
+                      path={movie.poster_path}
+                      isAdult={movie.adult}
+                      title={movie.title}
+                      voteAverage={movie.vote_average}
+                      genreId={Object.values(movie.genre_ids)}
+                      movieId={movie.id}
+                      releaseDate={movie.release_date}
+                      voteCount={movie.vote_count}
+                      description={movie.overview}
+              />
+            ))
+          ) : (
+            <div>Cargando</div>
+          )}
+        </Movies>
+      </BodyWrapper>
+    </App>
   )
 }
 
