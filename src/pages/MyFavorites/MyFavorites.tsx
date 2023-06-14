@@ -1,18 +1,43 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { ShowsSlider, 
-ShowsTitle,
-ShowsSliderContent,
-LabelWithTumbs, } from './styles'
+import {
+  App,
+  BodyWrapper,
+  Header,
+  ShowsTitle,
+  Movies,
+  Titulo,
+  DivTitulo,
+  Botones,
+  SortByName,
+  MovieSlider,
+  SortByCalification,
+} from "./styles";
 import { MovieContext } from 'contexts/MovieContext';
 import { MovieCard } from 'components/MovieCard';
 import { getMovieId } from 'services/movies/getMovies';
+import SortByAlphaIcon from '@mui/icons-material/SortByAlpha';
+import SortIcon from '@mui/icons-material/Sort';
 
 const MyFavorites = () => {
+  // --------------------------------------------- USE CONTEXT
   const { favoriteMovies } = useContext(MovieContext);
+
+  // --------------------------------------------- STATE
   const [movieAPICalls, setMovieAPICalls] = useState<any[]>([]);
 
+  // --------------------------------------------- FUNCTIONS
+  const sortbyName = () => {
+    
+  }
+
+  const sortBycalification = () => {
+
+  }
+
+  // --------------------------------------------- USE EFFECT
   useEffect(() => {
     const getMoviesFromIds = async () => {
+      // Way of avoiding duplicates (1)
       let uniqueMovies: string[] = movieAPICalls.map(movie => JSON.stringify(movie));
   
       for (const id of favoriteMovies) {
@@ -23,7 +48,6 @@ const MyFavorites = () => {
               if (!uniqueMovies.includes(dataString)) {
                 //uniqueMovies.push(dataString);
                 setMovieAPICalls((prevMovie) => [...prevMovie, JSON.parse(dataString)]);
-                console.log(movieAPICalls);
               }
             }
           } catch (err) {
@@ -36,16 +60,22 @@ const MyFavorites = () => {
   }, [favoriteMovies, movieAPICalls]);
   
 
-  
-
+  // --------------------------------------------- MAIN RENDER
   return (
-    <ShowsSlider>
-      <ShowsTitle>my favorites</ShowsTitle>
-      <ShowsSliderContent>
-        <LabelWithTumbs>
+    <App>
+      <BodyWrapper>
+        <Header>
+          <ShowsTitle>POPULAR</ShowsTitle>
+          <Botones>
+            <SortByName onClick={sortbyName}><SortByAlphaIcon fontSize='small' />Sort by Name</SortByName>
+            <SortByCalification onClick={sortBycalification}><SortIcon fontSize='small' />Sort by Calification</SortByCalification>
+          </Botones>
+        </Header>
+        <Movies>
+          <MovieSlider>
         {movieAPICalls?.length > 0 ? (
                 movieAPICalls.reduce((unique, movie) => {
-                  return unique.findIndex((m:any) => m.id === movie.id) < 0 ? [...unique, movie] : unique;
+                  return unique.findIndex((m: any) => m.id === movie.id) < 0 ? [...unique, movie] : unique;
                 }, [])
                 .map((movie:any) => (
                   <MovieCard
@@ -61,11 +91,11 @@ const MyFavorites = () => {
                     description={movie.overview}
                   />
                 ))
-                
         ) : (<div>Fetching</div>)}
-        </LabelWithTumbs>
-      </ShowsSliderContent>
-    </ShowsSlider>
+      </MovieSlider>
+      </Movies>
+      </BodyWrapper>
+    </App>
   )
 }
 
