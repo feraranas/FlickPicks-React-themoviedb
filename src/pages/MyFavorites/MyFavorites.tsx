@@ -1,90 +1,72 @@
-import { MovieCard } from 'components/MovieCard';
-import React, {useContext, useEffect, useState} from 'react'
-import {
-  App,
-  BodyWrapper,
-  Header,
-  ShowsTitle,
-  Movies,
-  Titulo,
-  DivTitulo,
-  Botones,
-  SortByName,
-  MovieSlider,
-  SortByCalification,
-} from "./styles";
-import SortByAlphaIcon from '@mui/icons-material/SortByAlpha';
-import SortIcon from '@mui/icons-material/Sort';
+import React, { useContext, useEffect, useState } from 'react'
+import { ShowsSlider, 
+ShowsTitle,
+ShowsSliderContent,
+LabelWithTumbs, } from './styles'
 import { MovieContext } from 'contexts/MovieContext';
+import { MovieCard } from 'components/MovieCard';
 import { getMovieId } from 'services/movies/getMovies';
 
-
 const MyFavorites = () => {
-  // --------------------------------------------- CONTEXT
   const { favoriteMovies } = useContext(MovieContext);
-
-  // --------------------------------------------- STATES
   const [movieAPICalls, setMovieAPICalls] = useState<any[]>([]);
-  const [favoriteMoviesIds, setFavoriteMoviesIds] = useState<any[]>([]);
 
-  // --------------------------------------------- USE EFFECT
   useEffect(() => {
     const getMoviesFromIds = async () => {
-      for (const _id of favoriteMovies) {
-        if (!favoriteMoviesIds.includes(_id)) {
+      let uniqueMovies: string[] = movieAPICalls.map(movie => JSON.stringify(movie));
+  
+      for (const id of favoriteMovies) {
           try {
-            const res = await getMovieId(_id);
+            const res = await getMovieId(id);
             if (res && res.data) {
-              setFavoriteMoviesIds((prevMovie) => [...prevMovie, _id]);
-              setMovieAPICalls((prevMovie) => [...prevMovie, res.data]);
+              const dataString = JSON.stringify(res.data);
+              if (!uniqueMovies.includes(dataString)) {
+                //uniqueMovies.push(dataString);
+                setMovieAPICalls((prevMovie) => [...prevMovie, JSON.parse(dataString)]);
+                console.log(movieAPICalls);
+              }
             }
           } catch (err) {
             console.log(err, 'err');
           }
-        }
       }
     };
   
     getMoviesFromIds();
-  }, [favoriteMovies]);
+  }, [favoriteMovies, movieAPICalls]);
+  
 
-  // --------------------------------------------- MAIN RENDER
+  
+
   return (
-    <App>
-      <BodyWrapper>
-        <Header>
-          <ShowsTitle>MY FAVORITES</ShowsTitle>
-          <Botones>
-            <SortByName><SortByAlphaIcon fontSize='small' />Sort by Name</SortByName>
-            <SortByCalification><SortIcon fontSize='small' />Sort by Calification</SortByCalification>
-          </Botones>
-        </Header>
-        <Movies>
-          <MovieSlider>
-            {movieAPICalls?.length > 0 ? (
-              movieAPICalls.map((movie) => (
-                <MovieCard
-                        key={movie.id}
-                        path={movie.poster_path}
-                        isAdult={movie.adult}
-                        title={movie.title}
-                        voteAverage={movie.vote_average}
-                        genreId={Object.values(movie.genre_ids)}
-                        movieId={movie.id}
-                        releaseDate={movie.release_date}
-                        voteCount={movie.vote_count}
-                        description={movie.overview}
-                />
-              ))
-            ) : (
-              <div>Cargando</div>
-            )}
-          </MovieSlider>
-        </Movies>
-      </BodyWrapper>
-    </App>
+    <ShowsSlider>
+      <ShowsTitle>my favorites</ShowsTitle>
+      <ShowsSliderContent>
+        <LabelWithTumbs>
+        {movieAPICalls?.length > 0 ? (
+                movieAPICalls.reduce((unique, movie) => {
+                  return unique.findIndex((m:any) => m.id === movie.id) < 0 ? [...unique, movie] : unique;
+                }, [])
+                .map((movie:any) => (
+                  <MovieCard
+                    key={movie.id}
+                    isAdult={movie.adult}
+                    path={movie.poster_path}
+                    title={movie.title}
+                    voteAverage={movie.vote_average}
+                    genreId={Object.values(movie.genres)}
+                    movieId={movie.id}
+                    releaseDate={movie.release_date}
+                    voteCount={movie.vote_count}
+                    description={movie.overview}
+                  />
+                ))
+                
+        ) : (<div>Fetching</div>)}
+        </LabelWithTumbs>
+      </ShowsSliderContent>
+    </ShowsSlider>
   )
 }
 
 export default MyFavorites
-
