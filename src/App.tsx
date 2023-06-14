@@ -12,7 +12,6 @@ const App = () => {
   const [popularMovies, setPopularMovies] = useState<any[]>([]);
   const [topRatedMovies, setTopRatedMovies] = useState<any[]>([]);
   const [nowPlayingMovies, setNowPlayingMovies] = useState<any[]>([]);
-  
   const [favoriteMovies, setFavoriteMovies] = useState<any[]>(() => {
     const savedFavorites = localStorage.getItem('favorites');
     return savedFavorites ? JSON.parse(savedFavorites) : [];
@@ -24,14 +23,11 @@ const App = () => {
     }
   };
   
-
   const removeFavoriteMovie = (id: string | undefined) => {
     setFavoriteMovies((prevFavorites) => prevFavorites.filter((favorite) => favorite !== id));
   };
 
   useEffect(() => {
-    // Save to Local Storage whenever data changes
-    localStorage.setItem('favorites', JSON.stringify(favoriteMovies));
 
     const getPopularMovies = async() => {
       await getPopular()
@@ -56,6 +52,7 @@ const App = () => {
           console.log(err, 'err');
         })
     }
+
     const getNowPlayingMovies = async() => {
       await getNowPlaying()
         .then((res) => {
@@ -71,7 +68,7 @@ const App = () => {
     getPopularMovies();
     getNowPlayingMovies();
     getTopRatedMovies();
-  }, [favoriteMovies])
+  })
 
   return (
   <MovieContext.Provider value={{ 

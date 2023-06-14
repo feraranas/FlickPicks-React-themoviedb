@@ -2,6 +2,8 @@ import { MovieCard } from 'components/MovieCard';
 import React, {useContext} from 'react'
 import {
   BodyWrapper,
+  Wrapper,
+  ShowsTitle,
   Movies,
   Titulo,
   DivTitulo,
@@ -17,20 +19,15 @@ import { MovieContext } from 'contexts/MovieContext';
 
 const Popular = () => {
   const { popularMovies } = useContext(MovieContext);
-  
-  // const [loading, setLoading] = useState(true);
 
   return (
-    <BodyWrapper>
-      <Fila>
-        <DivTitulo>
-          <Titulo>popular</Titulo>
-        </DivTitulo>
+    <Wrapper>
+        <ShowsTitle>POPULAR</ShowsTitle>
         <Botones>
           <SortByName><SortByAlphaIcon fontSize='small' />Sort by Name</SortByName>
           <SortByCalification><SortIcon fontSize='small' />Sort by Calification</SortByCalification>
         </Botones>
-      </Fila>
+      
       <Movies>
         <SliderMovies>
         {popularMovies?.length > 0 ? (
@@ -53,7 +50,7 @@ const Popular = () => {
         )}
         </SliderMovies>
       </Movies>
-    </BodyWrapper>
+    </Wrapper>
   )
 }
 
