@@ -22,51 +22,62 @@ import StarIcon from '@mui/icons-material/Star';
 import { MovieContext } from "contexts/MovieContext";
 
 const Show = () => {
+     // --------------------------------------------- HOOKS
      const { id } = useParams();
      const location = useLocation();
      const navigate = useNavigate();
-     const [recommendationsMovies, setRecommendationsMovies] = useState<any[]>([]);
      const poster_img = "https://image.tmdb.org/t/p/w500" + location.state.poster;
-     const [isFavorite, setFavorite] = useState(false);
+     
+     // --------------------------------------------- STATES
      const { favoriteMovies, addFavoriteMovie, removeFavoriteMovie } = useContext(MovieContext);
+     
+     const [isFavorite, setFavorite] = useState(false)
+     
+     const [recommendationsMovies, setRecommendationsMovies] = useState<any[]>([]);
 
+     // --------------------------------------------- FUNCTIONS
      const goBack = () => {
           navigate(-1);
      }
  
      const addFavoritesButton = () => {
           if (!isFavorite) {
-               setFavorite(true);
                addFavoriteMovie(id);
           } else {
-               setFavorite(false);
                removeFavoriteMovie(id);
           }
      }
 
-     useEffect(() => {
-          const getRecommendationsMovies = async() => {
-            await getRecommendations(id)
-              .then((res) => {
-                if (res && res.data) {
-                  setRecommendationsMovies(res.data.results);
-                }
+     // --------------------------------------------- API CALLS
+     const getRecommendationsMovies = async() => {
+          await getRecommendations(id)
+            .then((res) => {
+              if (res && res.data) {
+                setRecommendationsMovies(res.data.results);
+              }
+          })
+            .catch((err) => {
+              console.log(err, 'err');
             })
-              .catch((err) => {
-                console.log(err, 'err');
-              })
-          }
-          
+        }
+
+     // --------------------------------------------- USE EFFECT
+     useEffect(() => {          
           getRecommendationsMovies();
+          
      });
 
-     useEffect(() => {
-          // Compruebo en local storage si existe una película con 
-          // el id que viene de useParams();
+     useEffect (() => {
+          const isMovieFavorite = () => {
+               if (favoriteMovies.includes(id)) {
+                    setFavorite(true);
+               } else {setFavorite(false);}
+          }
+          
+          isMovieFavorite();
+     }, [favoriteMovies, id]);
 
-          setFavorite(true);
-     }, [id]);
-
+     // --------------------------------------------- MAIN RENDER
      return(
           <HomeWrapper>
                <ShowDetails>

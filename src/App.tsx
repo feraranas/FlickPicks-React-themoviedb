@@ -12,6 +12,7 @@ const App = () => {
   const [popularMovies, setPopularMovies] = useState<any[]>([]);
   const [topRatedMovies, setTopRatedMovies] = useState<any[]>([]);
   const [nowPlayingMovies, setNowPlayingMovies] = useState<any[]>([]);
+  
   const [favoriteMovies, setFavoriteMovies] = useState<any[]>(() => {
     const savedFavorites = localStorage.getItem('favorites');
     return savedFavorites ? JSON.parse(savedFavorites) : [];
