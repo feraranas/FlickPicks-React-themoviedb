@@ -11,7 +11,7 @@ export type MovieContextType = {
   addFavoriteMovie: (id: string | undefined) => void;
   removeFavoriteMovie: (id: string | undefined) => void;
 };
-   
+
 export const MovieContext = React.createContext<MovieContextType>({
   popularMovies: [],
   setPopularMovies: () => {},
@@ -23,6 +23,3 @@ export const MovieContext = React.createContext<MovieContextType>({
   addFavoriteMovie: (id: string | undefined) => {},
   removeFavoriteMovie: (id: string | undefined) => {},
 });
-
-
-   

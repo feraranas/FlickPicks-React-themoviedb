@@ -76,11 +76,3 @@ export const getMovieId = async(movieId: string | undefined) => {
                     })
      return res;
 }
-
-/*
-export const getPopular = async(data) => {
-          let res: any;
-          const endpoint = `popular?api_key=${process.env.REACT_APP_MDB_API_KEY}&language=en-US`;
-          await httpInstance.post(endpoint, {})
-}
-*/

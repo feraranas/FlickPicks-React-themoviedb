@@ -10,6 +10,29 @@ export const Fila = styled.div`
      margin-right: -15px;
 `;
 
+export const Wrapper = styled.div`
+     background-color: #f3f3f3;
+     float: left;
+     width: 100%;
+     padding: 0;
+     margin: auto;
+     margin-bottom: 10px;
+     overflow: hidden;
+     padding-left: 15px;
+`;
+
+export const ShowsTitle = styled.div`
+     font-size: 30px;
+     color: #333;
+     position: relative;
+     font-weight: 600;
+     margin-top: 20px;
+     margin-bottom: 20px;
+     text-align: left;
+     margin-left: 30px;
+     text-transform: uppercase;
+`;
+
 export const DivTitulo = styled.div`
      position: relative;
      width: 100%;
