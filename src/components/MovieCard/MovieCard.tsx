@@ -25,7 +25,8 @@ const MovieCard: React.FC<MovieCardProp> = ({
   voteCount,
   description,
 }) => {
-  const poster = "https://image.tmdb.org/t/p/w500" + path;
+  const poster = path === null ? "https://tacm.com/wp-content/uploads/2018/01/no-image-available.jpeg" : IMAGE_SOURCE + path;
+
   const navigate = useNavigate();
   
   const getGenre = (genreIds: Array<any>) => {
