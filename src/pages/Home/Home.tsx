@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { MovieCard } from "components/MovieCard";
 import {
   App,
@@ -10,16 +10,73 @@ import {
   ViewAll, ViewAlla,
 } from "./styles"
 import { MovieContext } from 'contexts/MovieContext';
+import { getNowPlaying, getPopular, getTopRated } from 'services';
+import { CircularProgress } from '@mui/material';
 
 const Home = () => {
+  // ==================================== STATES
+  const [popularMovies, setPopularMovies] = useState<any[]>([]);
+  const [topRatedMovies, setTopRatedMovies] = useState<any[]>([]);
+  const [nowPlayingMovies, setNowPlayingMovies] = useState<any[]>([]);
+  const [loadingPopularMovies, setLoadingPopularMovies] = useState(false);
+  const [loadingTopRatedMovies, setLoadingTopRatedMovies] = useState(false);
+  const [loadingNowPlayingMovies, setLoadingNowPlayingMovies] = useState(false);
 
-  // This calls the 'useContext' hook, which allows functional components to access the
-  // value provided by a context. It takes the 'MovieContext' as an argument, representing
-  // the context object that was created using 'createContext' in the parent component.
+  // ==================================== API CALLS
+  const getPopularMovies = async() => {
+    setLoadingPopularMovies(true);
+    await getPopular()
+      .then((res) => {
+        if (res && res.data) {
+          setPopularMovies(res.data.results);
+        }
+    })
+      .catch((err) => {
+        console.log(err, 'err');
+      })
+      setLoadingPopularMovies(false);
+  }
 
-  // This uses object destructuring syntax to extract specific values from the MovieContext
-  const { popularMovies, topRatedMovies, nowPlayingMovies } = useContext(MovieContext); 
+  const getTopRatedMovies = async () => {
+    setLoadingTopRatedMovies(true);
+    await getTopRated()
+      .then((res) => {
+        if (res && res.data) {
+          // console.log(res.data, 'res');
+          setTopRatedMovies(res.data.results);
+        }
+      })
+      .catch((err) => {
+        console.log(err, 'err');
+      });
+      setLoadingTopRatedMovies(false);
+  }
 
+  const getNowPlayingMovies = async () => {
+    setLoadingNowPlayingMovies(true);
+    await getNowPlaying()
+      .then((res) => {
+        if (res && res.data) {
+          // console.log(res.data, 'res');
+          setNowPlayingMovies(res.data.results);
+        }
+      })
+      .catch((err) => {
+        console.log(err, 'err');
+      });
+    setLoadingNowPlayingMovies(false);
+  }
+
+  // ==================================== USE EFFECT
+  useEffect(() => {
+    setTimeout(() => {
+      getPopularMovies()
+      getTopRatedMovies()
+      getNowPlayingMovies()
+    }, 1000);
+  });
+
+  // ==================================== MAIN RENDER
   return (
     <App>
       <HomeWrapper>
@@ -27,7 +84,7 @@ const Home = () => {
           <ShowsTitle>POPULAR</ShowsTitle>
           <ShowsSliderContent>
             <LabelWithTumbs>
-              {popularMovies?.length > 0 ? (
+              {!loadingPopularMovies ? (
                 popularMovies.slice(0,8).map((movie) => (
                   <MovieCard
                     key={movie.id}
@@ -42,7 +99,16 @@ const Home = () => {
                     description={movie.overview}
                   />
                 ))
-              ) : (<div>Fetching</div>)}
+              ) : (<div
+                      style={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          height: "100vh",
+                      }}
+                  >
+                      <CircularProgress />
+                  </div>)}
             </LabelWithTumbs>
             <ViewAll>
               <a href="/popular/">View All</a>
@@ -53,7 +119,7 @@ const Home = () => {
           <ShowsTitle>TOP RATED</ShowsTitle>
             <ShowsSliderContent>
               <LabelWithTumbs>
-              {topRatedMovies?.length > 0 ? (
+              {!loadingTopRatedMovies ? (
                 topRatedMovies.slice(0.8).map((movie) => (
                   <MovieCard
                     key={movie.id}
@@ -68,7 +134,16 @@ const Home = () => {
                     description={movie.overview}
                   />
                 ))
-              ) : (<div>Fetching</div>)}
+              ) : (<div
+                        style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            height: "100vh",
+                        }}
+                    >
+                        <CircularProgress />
+                    </div>)}
               </LabelWithTumbs>
               <ViewAll>
                 <a href="/top-rated/">View All</a>
@@ -79,7 +154,7 @@ const Home = () => {
           <ShowsTitle>NOW PLAYING</ShowsTitle>
             <ShowsSliderContent>
               <LabelWithTumbs>
-              {nowPlayingMovies?.length > 0 ? (
+              {!loadingNowPlayingMovies ? (
                 nowPlayingMovies.slice(0,8).map((movie) => (
                   <MovieCard
                     key={movie.id}
@@ -94,7 +169,16 @@ const Home = () => {
                     description={movie.overview}
                   />
                 ))
-              ) : (<div>Fetching</div>)}
+              ) : (<div
+                      style={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          height: "100vh",
+                      }}
+                  >
+                      <CircularProgress />
+                  </div>)}
               </LabelWithTumbs>
               <ViewAll>
                 <ViewAlla as="a" href="/now-playing/">View All</ViewAlla>

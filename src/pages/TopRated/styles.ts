@@ -41,25 +41,6 @@ export const ShowsTitle = styled.div`
      }
 `;
 
-export const DivTitulo = styled.div`
-     position: relative;
-     width: 100%;
-     padding-right: 15px;
-     padding-left: 15px;
-`;
-
-export const Titulo = styled.div`
-     font-size: 30px;
-     color: #333;
-     position: relative;
-     font-weight: 600;
-     margin-top: 20px;
-     margin-bottom: 20px;
-     text-align: left;
-     margin-left: 30px;
-     text-transform: uppercase;
-`;
-
 export const Botones = styled.div`
   flex-grow: 1;
   display: flex;
