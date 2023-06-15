@@ -33,7 +33,9 @@ const Show = () => {
      const [loadingRecommendations, setLoadingRecommendations] = useState(false);
      const [isFavorite, setFavorite] = useState(false)
      const [recommendationsMovies, setRecommendationsMovies] = useState<any[]>([]);
-     const [favoriteIds, setFavoriteIds] = useState<number[]>([]);
+     const [favoriteIds, setFavoriteIds] = useState<any[]>(() => JSON.parse(localStorage.getItem('favorites') || '[]'))
+
+
 
      // ====================================> FUNCTIONS
      const goBack = () => {
@@ -41,18 +43,20 @@ const Show = () => {
      }
 
      const addToFavorites = () => {
-          const updatedIds = [...favoriteIds, parseInt(id!)]
-          setFavoriteIds(updatedIds);
+          const newFavoriteIds = [...favoriteIds, id]
+          setFavoriteIds(newFavoriteIds);
           setFavorite(true);
-          localStorage.setItem('favorites', JSON.stringify(updatedIds));
+          localStorage.setItem('favorites', JSON.stringify(newFavoriteIds));
      }
 
      const removeFromFavorites = () => {
-          const currentIds = [...favoriteIds]
-          setFavoriteIds(currentIds);
+          let remoteFavoriteIds = [...favoriteIds];
+          remoteFavoriteIds = remoteFavoriteIds.filter((c) => c !== id);
+          setFavoriteIds(remoteFavoriteIds);
           setFavorite(false);
-          localStorage.setItem('favorites', JSON.stringify(currentIds));
+          localStorage.setItem('favorites', JSON.stringify(remoteFavoriteIds));
      }
+        
 
      // ====================================> API CALLS
      const getRecommendationsMovies = async() => {
@@ -69,12 +73,20 @@ const Show = () => {
         }
 
      // ====================================> USE EFFECT
-     useEffect(() => {         
+     useEffect(() => {
           setLoadingRecommendations(true);
+
+            if (favoriteIds.includes(id)) {
+                    setFavorite(true);
+               } else {
+                    setFavorite(false);
+               }
+               
           setTimeout(() => {
-               getRecommendationsMovies();
+              getRecommendationsMovies();
           }, 1000)
-     });
+      }, [id]);
+      
 
      // ====================================> MAIN RENDER
      return(
@@ -97,8 +109,9 @@ const Show = () => {
                               <div>Vote count: {location.state.vote_count}</div>
                               <div>Description: {location.state.overview}</div>
                               <div>Genre ids: {location.state.genre_ids}</div>
-                              { !isFavorite ? (<FavoriteButton onClick={removeFromFavorites} color="5cb85c"><StarBorderIcon fontSize='small' />Add to Favorites</FavoriteButton>
-                                             ) : (<FavoriteButton onClick={addToFavorites} color="d9534f"><StarIcon fontSize='small' />Remove from Favorites</FavoriteButton>)
+                              { isFavorite ? (<FavoriteButton onClick={removeFromFavorites} color="d9534f"><StarIcon fontSize='small' />Remove from Favorites</FavoriteButton>
+                                             ): (<FavoriteButton onClick={addToFavorites} color="5cb85c"><StarBorderIcon fontSize='small' />Add to Favorites</FavoriteButton>
+                                             )
                               }
                               </Col>
                          </ShowRow>
@@ -109,20 +122,28 @@ const Show = () => {
                     <ShowsSliderContent>
                     <LabelWithTumbs>
                          {!loadingRecommendations ? (
-                              recommendationsMovies.slice(0,8).map((movie) => (
-                              <MovieCard
-                                   key={movie.id}
-                                   path={movie.poster_path}
-                                   isAdult={movie.adult}
-                                   title={movie.title}
-                                   voteAverage={movie.vote_average}
-                                   genreId={Object.values(movie.genre_ids)}
-                                   movieId={movie.id}
-                                   releaseDate={movie.release_date}
-                                   voteCount={movie.vote_count}
-                                   description={movie.overview}
-                              />
-                              ))
+                              <div>
+                              {recommendationsMovies.length > 0 ? (
+                                   recommendationsMovies.slice(0,12).map((movie) => (
+                                        <MovieCard
+                                             key={movie.id}
+                                             path={movie.poster_path}
+                                             isAdult={movie.adult}
+                                             title={movie.title}
+                                             voteAverage={movie.vote_average}
+                                             genreId={Object.values(movie.genre_ids)}
+                                             movieId={movie.id}
+                                             releaseDate={movie.release_date}
+                                             voteCount={movie.vote_count}
+                                             description={movie.overview}
+                                        />
+                                        ))
+                              ) : (
+                                   <div>
+                                        I found no recommendations.
+                                   </div>
+                              )}
+                              </div>
                          ) : (<div
                          style={{
                               display: "flex",

@@ -1,6 +1,5 @@
 import { MovieCard } from 'components/MovieCard';
-import { MovieContext } from 'contexts/MovieContext';
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   App,
   BodyWrapper,
@@ -56,7 +55,7 @@ const TopRatedMovies = () => {
         <Movies>
           <MovieSlider>
           {!loading ? (
-                topRatedMovies.slice(0,8).map((movie) => (
+                topRatedMovies.map((movie) => (
                   <MovieCard
                     key={movie.id}
                     path={movie.poster_path}

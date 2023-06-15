@@ -42,7 +42,7 @@ const Popular = () => {
   useEffect(() => {
     setLoading(true)
     setTimeout(() => getPopularMovies(), 1000);
-  })
+  }, [])
 
   // ====================================> MAIN RENDER
   return (
@@ -58,7 +58,7 @@ const Popular = () => {
         <Movies>
           <MovieSlider>
             {!loading ? (
-                popularMovies.slice(0,8).map((movie) => (
+                popularMovies.map((movie) => (
                   <MovieCard
                     key={movie.id}
                     path={movie.poster_path}
