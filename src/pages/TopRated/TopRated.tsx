@@ -55,7 +55,7 @@ const TopRatedMovies = () => {
         <Movies>
           <MovieSlider>
           {!loading ? (
-                topRatedMovies.slice(0,8).map((movie) => (
+                topRatedMovies.map((movie) => (
                   <MovieCard
                     key={movie.id}
                     path={movie.poster_path}

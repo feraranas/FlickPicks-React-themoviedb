@@ -65,30 +65,32 @@ const MyFavorites = () => {
         <Movies>
           <MovieSlider>
           {!loading ? (
-                              myFavorites.slice(0,8).map((movie) => (
-                              <MovieCard
-                                   key={movie.id}
-                                   path={movie.poster_path}
-                                   isAdult={movie.adult}
-                                   title={movie.title}
-                                   voteAverage={movie.vote_average}
-                                   genreId={Object.values(movie.genre_ids)}
-                                   movieId={movie.id}
-                                   releaseDate={movie.release_date}
-                                   voteCount={movie.vote_count}
-                                   description={movie.overview}
-                              />
-                              ))
-                         ) : (<div
-                         style={{
-                              display: "flex",
-                              justifyContent: "center",
-                              alignItems: "center",
-                              height: "100vh",
-                         }}
-                    >
-                         <CircularProgress />
-                    </div>)}
+              myFavorites.slice(0,8).map((movie) => (
+                <MovieCard
+                  key={movie.id}
+                  path={movie.poster_path}
+                  isAdult={movie.adult}
+                  title={movie.title}
+                  voteAverage={movie.vote_average}
+                  genreId={movie.genre_ids ? Object.values(movie.genre_ids) : []}
+                  movieId={movie.id}
+                  releaseDate={movie.release_date}
+                  voteCount={movie.vote_count}
+                  description={movie.overview}
+                />
+              ))
+            ) : (
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  height: "100vh",
+                }}
+              >
+                <CircularProgress />
+              </div>
+            )}
       </MovieSlider>
       </Movies>
       </BodyWrapper>
