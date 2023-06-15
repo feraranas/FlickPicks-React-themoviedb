@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { MovieCard } from "components/MovieCard";
 import {
   App,
@@ -10,15 +10,61 @@ import {
   ViewAll, ViewAlla,
 } from "./styles"
 import { MovieContext } from 'contexts/MovieContext';
+import { getNowPlaying, getPopular, getTopRated } from 'services';
 
 const Home = () => {
+  // ==================================== STATES
+  const [popularMovies, setPopularMovies] = useState(false);
+  const [topRatedMovies, setTopRatedMovies] = useState(false);
+  const [nowPlayingMovies, setNowPlayingMovies] = useState(false);
+  const [loadingPopularMovies, setLoadingPopularMovies] = useState(false);
+  const [loadingTopRatedMovies, setLoadingTopRatedMovies] = useState(false);
+  const [loadingNowPlayingMovies, setLoadingNowPlayingMovies] = useState(false);
 
-  // This calls the 'useContext' hook, which allows functional components to access the
-  // value provided by a context. It takes the 'MovieContext' as an argument, representing
-  // the context object that was created using 'createContext' in the parent component.
+  // ==================================== API CALLS
+  const getPopularMovies = async() => {
+    setLoadingPopularMovies(true);
+    await getPopular()
+      .then((res) => {
+        if (res && res.data) {
+          setPopularMovies(res.data.results);
+        }
+    })
+      .catch((err) => {
+        console.log(err, 'err');
+      })
+      setLoadingPopularMovies(false);
+  }
 
-  // This uses object destructuring syntax to extract specific values from the MovieContext
-  const { popularMovies, topRatedMovies, nowPlayingMovies } = useContext(MovieContext); 
+  const getTopRatedMovies = async () => {
+    setLoadingTopRatedMovies(true);
+    await getTopRated()
+      .then((res) => {
+        if (res && res.data) {
+          // console.log(res.data, 'res');
+          setTopRatedMovies(res.data.results);
+        }
+      })
+      .catch((err) => {
+        console.log(err, 'err');
+      });
+      setLoadingTopRatedMovies(false);
+  }
+
+  const getNowPlayingMovies = async () => {
+    setLoadingNowPlayingMovies(true);
+    await getNowPlaying()
+      .then((res) => {
+        if (res && res.data) {
+          // console.log(res.data, 'res');
+          setNowPlayingMovies(res.data.results);
+        }
+      })
+      .catch((err) => {
+        console.log(err, 'err');
+      });
+    setLoadingNowPlayingMovies(false);
+  }
 
   return (
     <App>

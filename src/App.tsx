@@ -30,17 +30,7 @@ const App = () => {
 
   useEffect(() => {
 
-    const getPopularMovies = async() => {
-      await getPopular()
-        .then((res) => {
-          if (res && res.data) {
-            setPopularMovies(res.data.results);
-          }
-      })
-        .catch((err) => {
-          console.log(err, 'err');
-        })
-    }
+    
   
     const getTopRatedMovies = async() => {
       await getTopRated()

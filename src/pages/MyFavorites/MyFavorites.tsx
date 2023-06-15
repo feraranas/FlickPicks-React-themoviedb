@@ -5,8 +5,6 @@ import {
   Header,
   ShowsTitle,
   Movies,
-  Titulo,
-  DivTitulo,
   Botones,
   SortByName,
   MovieSlider,
@@ -24,10 +22,13 @@ const MyFavorites = () => {
 
   // --------------------------------------------- STATE
   const [movieAPICalls, setMovieAPICalls] = useState<any[]>([]);
+  const [uniqueFavMovies, setUniqueFavMovies] = useState<any[]>([]);
 
   // --------------------------------------------- FUNCTIONS
   const sortbyName = () => {
-    
+    movieAPICalls.reduce((unique, movie) => {
+      return unique.findIndex((m: any) => m.id === movie.id) < 0 ? [...unique, movie] : unique;
+    }, []).map()
   }
 
   const sortBycalification = () => {
@@ -35,6 +36,10 @@ const MyFavorites = () => {
   }
 
   // --------------------------------------------- USE EFFECT
+  useEffect(() => {
+
+  }, [movieAPICalls])
+
   useEffect(() => {
     const getMoviesFromIds = async () => {
       // Way of avoiding duplicates (1)
@@ -54,10 +59,18 @@ const MyFavorites = () => {
             console.log(err, 'err');
           }
       }
-    };
+
+      setMovieAPICalls((prevMovies) =>
+      prevMovies.reduce((unique, movie) => {
+        return unique.findIndex((m: any) => m.id === movie.id) < 0 ? [...unique, movie] : unique;
+      }, [])
+    );
+      console.log(movieAPICalls);
+
+      };
   
     getMoviesFromIds();
-  }, [favoriteMovies, movieAPICalls]);
+  }, [favoriteMovies]);
   
 
   // --------------------------------------------- MAIN RENDER
@@ -74,10 +87,7 @@ const MyFavorites = () => {
         <Movies>
           <MovieSlider>
         {movieAPICalls?.length > 0 ? (
-                movieAPICalls.reduce((unique, movie) => {
-                  return unique.findIndex((m: any) => m.id === movie.id) < 0 ? [...unique, movie] : unique;
-                }, [])
-                .map((movie:any) => (
+                movieAPICalls.map((movie:any) => (
                   <MovieCard
                     key={movie.id}
                     isAdult={movie.adult}
