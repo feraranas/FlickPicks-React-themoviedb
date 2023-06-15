@@ -48,7 +48,8 @@ const Show = () => {
      }
 
      const removeFromFavorites = () => {
-          const currentIds = [...favoriteIds]
+          let currentIds = [...favoriteIds]
+          currentIds = currentIds.filter((c) => c !== parseInt(id!));
           setFavoriteIds(currentIds);
           setFavorite(false);
           localStorage.setItem('favorites', JSON.stringify(currentIds));
