@@ -75,7 +75,7 @@ const Show = () => {
           setTimeout(() => {
                getRecommendationsMovies();
           }, 1000)
-     });
+     }, []);
 
      // ====================================> MAIN RENDER
      return(

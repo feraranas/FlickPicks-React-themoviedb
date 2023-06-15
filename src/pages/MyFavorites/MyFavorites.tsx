@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   App,
   BodyWrapper,
@@ -10,7 +10,6 @@ import {
   MovieSlider,
   SortByCalification,
 } from "./styles";
-import { MovieContext } from 'contexts/MovieContext';
 import { MovieCard } from 'components/MovieCard';
 import { getMovieId } from 'services/movies/getMovies';
 import SortByAlphaIcon from '@mui/icons-material/SortByAlpha';
@@ -49,7 +48,7 @@ const MyFavorites = () => {
       setLoading(false);
     }
     getMyFavoriteMovies();
-  })
+  }, [])
   
 
   // ====================================> MAIN RENDER

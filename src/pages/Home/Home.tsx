@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { MovieCard } from "components/MovieCard";
 import {
   App,
@@ -9,7 +9,6 @@ import {
   LabelWithTumbs,
   ViewAll, ViewAlla,
 } from "./styles"
-import { MovieContext } from 'contexts/MovieContext';
 import { getNowPlaying, getPopular, getTopRated } from 'services';
 import { CircularProgress } from '@mui/material';
 
@@ -56,8 +55,7 @@ const Home = () => {
     setLoadingNowPlayingMovies(true);
     await getNowPlaying()
       .then((res) => {
-        if (res && res.data) {
-          // console.log(res.data, 'res');
+        if (res && res.data) { 
           setNowPlayingMovies(res.data.results);
         }
       })
@@ -74,7 +72,7 @@ const Home = () => {
       getTopRatedMovies()
       getNowPlayingMovies()
     }, 1000);
-  });
+  }, []);
 
   // ==================================== MAIN RENDER
   return (
