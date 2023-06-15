@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { MovieCard } from "components/MovieCard";
 import {
   App,
@@ -11,12 +11,13 @@ import {
 } from "./styles"
 import { MovieContext } from 'contexts/MovieContext';
 import { getNowPlaying, getPopular, getTopRated } from 'services';
+import { CircularProgress } from '@mui/material';
 
 const Home = () => {
   // ==================================== STATES
-  const [popularMovies, setPopularMovies] = useState(false);
-  const [topRatedMovies, setTopRatedMovies] = useState(false);
-  const [nowPlayingMovies, setNowPlayingMovies] = useState(false);
+  const [popularMovies, setPopularMovies] = useState<any[]>([]);
+  const [topRatedMovies, setTopRatedMovies] = useState<any[]>([]);
+  const [nowPlayingMovies, setNowPlayingMovies] = useState<any[]>([]);
   const [loadingPopularMovies, setLoadingPopularMovies] = useState(false);
   const [loadingTopRatedMovies, setLoadingTopRatedMovies] = useState(false);
   const [loadingNowPlayingMovies, setLoadingNowPlayingMovies] = useState(false);
@@ -66,6 +67,16 @@ const Home = () => {
     setLoadingNowPlayingMovies(false);
   }
 
+  // ==================================== USE EFFECT
+  useEffect(() => {
+    setTimeout(() => {
+      getPopularMovies()
+      getTopRatedMovies()
+      getNowPlayingMovies()
+    }, 1000);
+  });
+
+  // ==================================== MAIN RENDER
   return (
     <App>
       <HomeWrapper>
@@ -73,7 +84,7 @@ const Home = () => {
           <ShowsTitle>POPULAR</ShowsTitle>
           <ShowsSliderContent>
             <LabelWithTumbs>
-              {popularMovies?.length > 0 ? (
+              {!loadingPopularMovies ? (
                 popularMovies.slice(0,8).map((movie) => (
                   <MovieCard
                     key={movie.id}
@@ -88,7 +99,16 @@ const Home = () => {
                     description={movie.overview}
                   />
                 ))
-              ) : (<div>Fetching</div>)}
+              ) : (<div
+                      style={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          height: "100vh",
+                      }}
+                  >
+                      <CircularProgress />
+                  </div>)}
             </LabelWithTumbs>
             <ViewAll>
               <a href="/popular/">View All</a>
@@ -99,7 +119,7 @@ const Home = () => {
           <ShowsTitle>TOP RATED</ShowsTitle>
             <ShowsSliderContent>
               <LabelWithTumbs>
-              {topRatedMovies?.length > 0 ? (
+              {!loadingTopRatedMovies ? (
                 topRatedMovies.slice(0.8).map((movie) => (
                   <MovieCard
                     key={movie.id}
@@ -114,7 +134,16 @@ const Home = () => {
                     description={movie.overview}
                   />
                 ))
-              ) : (<div>Fetching</div>)}
+              ) : (<div
+                        style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            height: "100vh",
+                        }}
+                    >
+                        <CircularProgress />
+                    </div>)}
               </LabelWithTumbs>
               <ViewAll>
                 <a href="/top-rated/">View All</a>
@@ -125,7 +154,7 @@ const Home = () => {
           <ShowsTitle>NOW PLAYING</ShowsTitle>
             <ShowsSliderContent>
               <LabelWithTumbs>
-              {nowPlayingMovies?.length > 0 ? (
+              {!loadingNowPlayingMovies ? (
                 nowPlayingMovies.slice(0,8).map((movie) => (
                   <MovieCard
                     key={movie.id}
@@ -140,7 +169,16 @@ const Home = () => {
                     description={movie.overview}
                   />
                 ))
-              ) : (<div>Fetching</div>)}
+              ) : (<div
+                      style={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          height: "100vh",
+                      }}
+                  >
+                      <CircularProgress />
+                  </div>)}
               </LabelWithTumbs>
               <ViewAll>
                 <ViewAlla as="a" href="/now-playing/">View All</ViewAlla>
