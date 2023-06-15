@@ -19,36 +19,42 @@ import {
 import { MovieCard } from "components/MovieCard";
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import StarIcon from '@mui/icons-material/Star';
-import { MovieContext } from "contexts/MovieContext";
+import { CircularProgress } from "@mui/material";
+import { IMAGE_SOURCE } from "constants/moviesMock";
 
 const Show = () => {
-     // --------------------------------------------- HOOKS
+     // ====================================> HOOKS
      const { id } = useParams();
      const location = useLocation();
      const navigate = useNavigate();
-     const poster_img = "https://image.tmdb.org/t/p/w500" + location.state.poster;
+     const poster_img = IMAGE_SOURCE + location.state.poster;
      
-     // --------------------------------------------- STATES
-     const { favoriteMovies, addFavoriteMovie, removeFavoriteMovie } = useContext(MovieContext);
-     
+     // ====================================> STATES
+     const [loadingRecommendations, setLoadingRecommendations] = useState(false);
      const [isFavorite, setFavorite] = useState(false)
-     
      const [recommendationsMovies, setRecommendationsMovies] = useState<any[]>([]);
+     const [favoriteIds, setFavoriteIds] = useState<number[]>([]);
 
-     // --------------------------------------------- FUNCTIONS
+     // ====================================> FUNCTIONS
      const goBack = () => {
           navigate(-1);
      }
- 
-     const addFavoritesButton = () => {
-          if (!isFavorite) {
-               addFavoriteMovie(id);
-          } else {
-               removeFavoriteMovie(id);
-          }
+
+     const addToFavorites = () => {
+          const updatedIds = [...favoriteIds, parseInt(id!)]
+          setFavoriteIds(updatedIds);
+          setFavorite(true);
+          localStorage.setItem('favorites', JSON.stringify(updatedIds));
      }
 
-     // --------------------------------------------- API CALLS
+     const removeFromFavorites = () => {
+          const currentIds = [...favoriteIds]
+          setFavoriteIds(currentIds);
+          setFavorite(false);
+          localStorage.setItem('favorites', JSON.stringify(currentIds));
+     }
+
+     // ====================================> API CALLS
      const getRecommendationsMovies = async() => {
           await getRecommendations(id)
             .then((res) => {
@@ -59,25 +65,18 @@ const Show = () => {
             .catch((err) => {
               console.log(err, 'err');
             })
+            setLoadingRecommendations(false);
         }
 
-     // --------------------------------------------- USE EFFECT
-     useEffect(() => {          
-          getRecommendationsMovies();
-          
+     // ====================================> USE EFFECT
+     useEffect(() => {         
+          setLoadingRecommendations(true);
+          setTimeout(() => {
+               getRecommendationsMovies();
+          }, 1000)
      });
 
-     useEffect (() => {
-          const isMovieFavorite = () => {
-               if (favoriteMovies.includes(id)) {
-                    setFavorite(true);
-               } else {setFavorite(false);}
-          }
-          
-          isMovieFavorite();
-     }, [favoriteMovies, id]);
-
-     // --------------------------------------------- MAIN RENDER
+     // ====================================> MAIN RENDER
      return(
           <HomeWrapper>
                <ShowDetails>
@@ -98,8 +97,8 @@ const Show = () => {
                               <div>Vote count: {location.state.vote_count}</div>
                               <div>Description: {location.state.overview}</div>
                               <div>Genre ids: {location.state.genre_ids}</div>
-                              { !isFavorite ? (<FavoriteButton onClick={addFavoritesButton} color="5cb85c"><StarBorderIcon fontSize='small' />Add to Favorites</FavoriteButton>
-                                             ) : (<FavoriteButton onClick={addFavoritesButton} color="d9534f"><StarIcon fontSize='small' />Remove from Favorites</FavoriteButton>)
+                              { !isFavorite ? (<FavoriteButton onClick={removeFromFavorites} color="5cb85c"><StarBorderIcon fontSize='small' />Add to Favorites</FavoriteButton>
+                                             ) : (<FavoriteButton onClick={addToFavorites} color="d9534f"><StarIcon fontSize='small' />Remove from Favorites</FavoriteButton>)
                               }
                               </Col>
                          </ShowRow>
@@ -109,22 +108,31 @@ const Show = () => {
                     <ShowsTitle>Recommendations</ShowsTitle>
                     <ShowsSliderContent>
                     <LabelWithTumbs>
-                    {recommendationsMovies?.length > 0 ? (
-                         recommendationsMovies.slice(0,8).map((movie) => (
-                         <MovieCard
-                              key={movie.id}
-                              path={movie.poster_path}
-                              isAdult={movie.adult}
-                              title={movie.title}
-                              voteAverage={movie.vote_average}
-                              genreId={Object.values(movie.genre_ids)}
-                              movieId={movie.id}
-                              releaseDate={movie.release_date}
-                              voteCount={movie.vote_count}
-                              description={movie.overview}
-                         />
-                         ))
-                    ) : (<div>Fetching</div>)}
+                         {!loadingRecommendations ? (
+                              recommendationsMovies.slice(0,8).map((movie) => (
+                              <MovieCard
+                                   key={movie.id}
+                                   path={movie.poster_path}
+                                   isAdult={movie.adult}
+                                   title={movie.title}
+                                   voteAverage={movie.vote_average}
+                                   genreId={Object.values(movie.genre_ids)}
+                                   movieId={movie.id}
+                                   releaseDate={movie.release_date}
+                                   voteCount={movie.vote_count}
+                                   description={movie.overview}
+                              />
+                              ))
+                         ) : (<div
+                         style={{
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              height: "100vh",
+                         }}
+                    >
+                         <CircularProgress />
+                    </div>)}
                     </LabelWithTumbs>
                     </ShowsSliderContent>
                </ShowsSlider>
