@@ -76,11 +76,11 @@ const Show = () => {
      useEffect(() => {
           setLoadingRecommendations(true);
 
-            if (favoriteIds.includes(id)) {
-                    setFavorite(true);
-               } else {
-                    setFavorite(false);
-               }
+          if (favoriteIds.includes(id)) {
+               setFavorite(true);
+          } else {
+               setFavorite(false);
+          }
                
           setTimeout(() => {
               getRecommendationsMovies();

@@ -1,13 +1,12 @@
 import { MovieCard } from 'components/MovieCard';
-import React, {useContext, useEffect, useState} from 'react'
+import { Searchbar } from 'components/Searchbar';
+import React, { useEffect, useState} from 'react'
 import {
   App,
   BodyWrapper,
   Header,
   ShowsTitle,
   Movies,
-  Titulo,
-  DivTitulo,
   Botones,
   SortByName,
   MovieSlider,
@@ -16,13 +15,14 @@ import {
 import SortByAlphaIcon from '@mui/icons-material/SortByAlpha';
 import SortIcon from '@mui/icons-material/Sort';
 import { getPopular } from 'services';
-import { useNavigate } from 'react-router-dom';
 import { CircularProgress } from '@mui/material';
+import { MovieSearch } from 'components/MovieSearch';
 
 const Popular = () => {
   // ====================================> STATES
   const [popularMovies, setPopularMovies] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
+  const [inputValue, setInputValue] = React.useState("");
 
   // ====================================> API CALLS
   const getPopularMovies = async () => {
@@ -30,6 +30,7 @@ const Popular = () => {
       .then((res) => {
         if (res && res.data) {
           setPopularMovies(res.data.results);
+          console.log(res.data.results);
         }
       })
       .catch((err) => {
@@ -55,9 +56,14 @@ const Popular = () => {
             <SortByCalification><SortIcon fontSize='small' />Sort by Calification</SortByCalification>
           </Botones>
         </Header>
+        <Searchbar setInputValue={setInputValue} value={inputValue}/>
         <Movies>
           <MovieSlider>
-            {!loading ? (
+          {!loading ? (
+            <>
+              {!(inputValue === "") ? (
+                  <MovieSearch searchValues={inputValue} movieValues={popularMovies}/>
+              ) : (
                 popularMovies.map((movie) => (
                   <MovieCard
                     key={movie.id}
@@ -72,16 +78,18 @@ const Popular = () => {
                     description={movie.overview}
                   />
                 ))
-              ) : (<div
-                      style={{
-                          display: "flex",
-                          justifyContent: "center",
-                          alignItems: "center",
-                          height: "100vh",
-                      }}
-                  >
-                      <CircularProgress />
-                  </div>)}
+              )}
+            </>
+          ) : (<div
+                    style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        height: "100vh",
+                    }}
+                >
+                    <CircularProgress />
+                </div>)}
           </MovieSlider>
         </Movies>
       </BodyWrapper>

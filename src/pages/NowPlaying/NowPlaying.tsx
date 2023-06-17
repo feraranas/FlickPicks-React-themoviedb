@@ -1,4 +1,5 @@
 import { MovieCard } from 'components/MovieCard';
+import { Searchbar } from 'components/Searchbar';
 import React, { useEffect, useState } from 'react'
 import {
   App,
@@ -15,11 +16,15 @@ import SortByAlphaIcon from '@mui/icons-material/SortByAlpha';
 import SortIcon from '@mui/icons-material/Sort';
 import { CircularProgress } from '@mui/material';
 import { getNowPlaying } from 'services';
+import { MovieSearch } from 'components/MovieSearch';
 
 const NowPlaying = () => {
   // ====================================> STATES
   const [nowPlayingMovies, setNowPlayingMovies] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
+  const [sortedByName, setSortedByName] = useState(false);
+  const [sortedByVoteAverage, setSortedByVoteAverage] = useState(false);
+  const [inputValue, setInputValue] = React.useState("");
 
   // ====================================> API CALLS
   const getNowPlayingMovies = async () => {
@@ -35,10 +40,35 @@ const NowPlaying = () => {
     setLoading(false);
   }
 
+  // ====================================> FUNCTIONS
+  const handleSortByName = () => {
+    if (!sortedByName) {
+      const sortedMovies = [...nowPlayingMovies].sort((a, b) =>
+        a.title.localeCompare(b.title)
+      );
+      setNowPlayingMovies(sortedMovies);
+      setSortedByName(true);
+      setSortedByVoteAverage(false);
+    }
+  }
+
+  const handleSortByVoteAverage = () => {
+    if (!sortedByVoteAverage){ 
+      const sortedMovies = [...nowPlayingMovies].sort((a, b) =>
+        a.vote_average - b.vote_average
+      );
+      setNowPlayingMovies(sortedMovies)
+      setSortedByVoteAverage(true);
+      setSortedByName(false);
+    }
+  }
+
   // ====================================> USE EFFECT
   useEffect(() => {
     setLoading(true);
     setTimeout(() => getNowPlayingMovies(), 1000);
+    setSortedByName(false);
+    setSortedByVoteAverage(false);
   }, []);
   
   // ====================================> MAIN RENDER
@@ -48,13 +78,18 @@ const NowPlaying = () => {
         <Header>
           <ShowsTitle>NOW PLAYING</ShowsTitle>
           <Botones>
-            <SortByName><SortByAlphaIcon fontSize='small' />Sort by Name</SortByName>
-            <SortByCalification><SortIcon fontSize='small' />Sort by Calification</SortByCalification>
+            <SortByName onClick={handleSortByName}><SortByAlphaIcon fontSize='small' />Sort by Name</SortByName>
+            <SortByCalification onClick={handleSortByVoteAverage}><SortIcon fontSize='small' />Sort by Calification</SortByCalification>
           </Botones>
         </Header>
+        <Searchbar setInputValue={setInputValue} value={inputValue}/>
         <Movies>
           <MovieSlider>
-            {!loading ? (
+          {!loading ? (
+            <>
+              {!(inputValue === "") ? (
+                  <MovieSearch searchValues={inputValue} movieValues={nowPlayingMovies}/>
+              ) : (
                 nowPlayingMovies.map((movie) => (
                   <MovieCard
                     key={movie.id}
@@ -69,16 +104,18 @@ const NowPlaying = () => {
                     description={movie.overview}
                   />
                 ))
-              ) : (<div
-                      style={{
-                          display: "flex",
-                          justifyContent: "center",
-                          alignItems: "center",
-                          height: "100vh",
-                      }}
-                  >
-                      <CircularProgress />
-                  </div>)}
+              )}
+            </>
+          ) : (<div
+                    style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        height: "100vh",
+                    }}
+                >
+                    <CircularProgress />
+                </div>)}
           </MovieSlider>
         </Movies>
       </BodyWrapper>

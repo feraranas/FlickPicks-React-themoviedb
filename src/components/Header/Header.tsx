@@ -53,10 +53,10 @@ export default function Header(props: Props) {
         FlickPicks
       </Typography>
       <Divider />
-      <List>
+      <List sx={{textDecorationStyle: "none"}}>
         {navItems.map((item) => (
           <ListItem key={item.name} disablePadding>
-            <ListItemButton sx={{ textAlign: "center" }}>
+            <ListItemButton sx={{ textAlign: "center", textDecoration: "none"}}>
               <ListItemText primary={item.name} />
             </ListItemButton>
           </ListItem>

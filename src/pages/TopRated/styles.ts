@@ -37,7 +37,7 @@ export const ShowsTitle = styled.div`
      text-transform: uppercase;
      @media (max-width: 768px) {
           text-align: center;
-          justify-content: center;
+          margin-right: 50px;
      }
 `;
 
@@ -51,7 +51,24 @@ export const Botones = styled.div`
   margin-right: 30px;
   @media (max-width: 768px) {
     justify-content: center;
+    margin-top: -5px;
   }
+  @media (max-width: 550px) {
+     text-align: center;
+     align-items: center;
+     justify-content: center;
+     flex-direction: column;
+     
+  }
+`;
+
+export const Input = styled.input.attrs({
+     type: "text"
+})`
+     font-size: 14px;
+     padding: 20px;
+     border: 0.5px solid black;
+     border-radius: 5px;
 `;
 
 export const SortByName = styled.button`
@@ -67,6 +84,7 @@ export const SortByName = styled.button`
      transition: all 0.3s;
      border-radius: 5px;
      margin-right: 5px;
+     border: 0.8px solid black;
 `;
 
 export const SortByCalification = styled.button`
@@ -82,6 +100,7 @@ export const SortByCalification = styled.button`
      transition: all 0.3s;
      border-radius: 5px;
      margin-right: 5px;
+     border: 0.8px solid black;
 `;
 
 export const Movies = styled.div`
@@ -95,6 +114,12 @@ export const MovieSlider = styled.div`
      text-align: center;
      margin-left: 30px;
      @media (max-width: 560px) {
+          margin-left: 100px;
+     }
+     @media (max-width: 420px) {
           margin-left: 60px;
+     }
+     @media (max-width: 350px) {
+          margin-left: 30px;
      }
 `;
