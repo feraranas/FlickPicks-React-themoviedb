@@ -1,4 +1,5 @@
 import { MovieCard } from 'components/MovieCard';
+import { Searchbar } from 'components/Searchbar';
 import React, { useEffect, useState } from 'react'
 import {
   App,
@@ -7,8 +8,6 @@ import {
   ShowsTitle,
   Movies,
   Botones,
-  SearchBar,
-  Input,
   SortByName,
   MovieSlider,
   SortByCalification,
@@ -22,6 +21,7 @@ const NowPlaying = () => {
   // ====================================> STATES
   const [nowPlayingMovies, setNowPlayingMovies] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
+  const [inputValue, setInputValue] = React.useState("");
 
   // ====================================> API CALLS
   const getNowPlayingMovies = async () => {
@@ -54,9 +54,7 @@ const NowPlaying = () => {
             <SortByCalification><SortIcon fontSize='small' />Sort by Calification</SortByCalification>
           </Botones>
         </Header>
-        <SearchBar>
-            <Input type="text" className='Input' placeholder="Search" />
-        </SearchBar>
+        <Searchbar setInputValue={setInputValue} value={inputValue}/>
         <Movies>
           <MovieSlider>
             {!loading ? (

@@ -62,24 +62,6 @@ export const Botones = styled.div`
   }
 `;
 
-export const SearchBar = styled.div`
-     display: flex;
-     width: 70%;
-     margin-left: 30px;
-     margin-bottom: 30px;
-     flex-direction: column;
-     @media (max-width: 950px) {
-          justify-content: center;
-          width: 50%;
-          flex-direction: column;
-     }
-     @media (max-width: 768px) {
-          justify-content: center;
-          width: 80%;
-          flex-direction: column;
-     }
-`;
-
 export const Input = styled.input.attrs({
      type: "text"
 })`
