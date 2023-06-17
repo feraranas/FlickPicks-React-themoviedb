@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { getRecommendations } from "services/movies/getMovies";
 import {
@@ -8,17 +8,24 @@ import {
      LabelWithTumbs,
      HomeWrapper,
      ShowDetails,
-     ShowContainer,
-     ShowRow,
-     Col,
+     DescriptionData,
+     DescriptionDataTitle,
+     DescriptionDataNumbers,
+     Blocke,
+     DescriptionDataGenres,
+     DescriptionDataFavorite,
+     DescriptionDescription,
      PosterImage,
      ShowBox,
-     ImageContainer,
      FavoriteButton
 } from "./styles"
 import { MovieCard } from "components/MovieCard";
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import StarIcon from '@mui/icons-material/Star';
+import GroupsIcon from '@mui/icons-material/Groups';
+import WatchLaterIcon from '@mui/icons-material/WatchLater';
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import PublicIcon from '@mui/icons-material/Public';
 import { CircularProgress } from "@mui/material";
 import { IMAGE_SOURCE } from "constants/moviesMock";
 
@@ -92,68 +99,76 @@ const Show = () => {
      return(
           <HomeWrapper>
                <ShowDetails>
-                    <ShowContainer>
-                         <ShowRow>
-                              <Col size={3}>
-                                   <ShowBox>
-                                   <ImageContainer>
-                                   <PosterImage src={poster_img}></PosterImage>
-                                   </ImageContainer>
-                                   </ShowBox>
-                              </Col>
-                              <Col size={9}>
-                              <div>{location.state.name}</div>
-                              {location.state.adult ? (<div>18-</div>) : (<div>18+</div>)}
-                              <div>Vote Average: {location.state.vote_average}</div>
-                              <div>Release date: {location.state.release_date}</div>
-                              <div>Vote count: {location.state.vote_count}</div>
-                              <div>Description: {location.state.overview}</div>
-                              <div>Genre ids: {location.state.genre_ids}</div>
-                              { isFavorite ? (<FavoriteButton onClick={removeFromFavorites} color="d9534f"><StarIcon fontSize='small' />Remove from Favorites</FavoriteButton>
-                                             ): (<FavoriteButton onClick={addToFavorites} color="5cb85c"><StarBorderIcon fontSize='small' />Add to Favorites</FavoriteButton>
-                                             )
-                              }
-                              </Col>
-                         </ShowRow>
-                    </ShowContainer>
+                    <ShowBox>
+                         <PosterImage src={poster_img}></PosterImage>
+                    </ShowBox>
+                    <DescriptionData>
+                         <DescriptionDataTitle>
+                              {location.state.name}
+                         </DescriptionDataTitle>
+
+                         <DescriptionDataNumbers>
+                              <Blocke><GroupsIcon/>{location.state.adult ? (<div>18-</div>) : (<div>18+</div>)}</Blocke>
+                              <Blocke><ThumbUpIcon />{location.state.vote_average}</Blocke>
+                              <Blocke><WatchLaterIcon />{location.state.release_date}</Blocke>
+                              <Blocke><PublicIcon />{location.state.vote_count}</Blocke>
+                         </DescriptionDataNumbers>
+                         
+                         <DescriptionDescription>
+                         {location.state.overview}
+                         </DescriptionDescription>
+
+                         <DescriptionDataGenres>
+                         <div>Genre ids: {location.state.genre_ids}</div>
+                         </DescriptionDataGenres>
+
+                         <DescriptionDataFavorite>
+                              <div>Favorite</div>
+                         { isFavorite ? (<FavoriteButton onClick={removeFromFavorites} color="d9534f"><StarIcon fontSize='small' />Remove from Favorites</FavoriteButton>
+                                        ): (<FavoriteButton onClick={addToFavorites} color="5cb85c"><StarBorderIcon fontSize='small' />Add to Favorites</FavoriteButton>
+                                        )
+                         }
+                         </DescriptionDataFavorite>
+
+                    </DescriptionData>
                </ShowDetails>
                <ShowsSlider>
                     <ShowsTitle>Recommendations</ShowsTitle>
                     <ShowsSliderContent>
                     <LabelWithTumbs>
                          {!loadingRecommendations ? (
-                              <div>
-                              {recommendationsMovies.length > 0 ? (
-                                   recommendationsMovies.slice(0,12).map((movie) => (
-                                        <MovieCard
-                                             key={movie.id}
-                                             path={movie.poster_path}
-                                             isAdult={movie.adult}
-                                             title={movie.title}
-                                             voteAverage={movie.vote_average}
-                                             genreId={Object.values(movie.genre_ids)}
-                                             movieId={movie.id}
-                                             releaseDate={movie.release_date}
-                                             voteCount={movie.vote_count}
-                                             description={movie.overview}
-                                        />
-                                        ))
-                              ) : (
                                    <div>
-                                        I found no recommendations.
+                                   {recommendationsMovies.length > 0 ? (
+                                        recommendationsMovies.map((movie) => (
+                                             <MovieCard
+                                                  key={movie.id}
+                                                  path={movie.poster_path}
+                                                  isAdult={movie.adult}
+                                                  title={movie.title}
+                                                  voteAverage={movie.vote_average}
+                                                  genreId={Object.values(movie.genre_ids)}
+                                                  movieId={movie.id}
+                                                  releaseDate={movie.release_date}
+                                                  voteCount={movie.vote_count}
+                                                  description={movie.overview}
+                                             />
+                                             ))
+                                   ) : (
+                                        <div>
+                                             I found no recommendations.
+                                        </div>
+                                   )}
                                    </div>
-                              )}
-                              </div>
-                         ) : (<div
-                         style={{
-                              display: "flex",
-                              justifyContent: "center",
-                              alignItems: "center",
-                              height: "100vh",
-                         }}
-                    >
-                         <CircularProgress />
-                    </div>)}
+                              ) : (<div
+                              style={{
+                                   display: "flex",
+                                   justifyContent: "center",
+                                   alignItems: "center",
+                                   height: "100vh",
+                              }}
+                         >
+                              <CircularProgress />
+                         </div>)}
                     </LabelWithTumbs>
                     </ShowsSliderContent>
                </ShowsSlider>

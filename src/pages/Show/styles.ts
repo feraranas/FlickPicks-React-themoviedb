@@ -14,16 +14,58 @@ export const HomeWrapper = styled.div`
 `;
 
 export const ShowDetails = styled.div`
-     padding: 10px;
-     position: relative;
+     display: grid;
+     margin-top: 20px;
+     margin-bottom: 10px;
+     grid-template-columns: 1fr 3fr;
+     @media (max-width: 814px) {
+          grid-template-rows: 1fr 1fr;
+     }
 `;
 
-export const ShowContainer = styled.div`
-     width: 100%;
-     padding-right: 15px;
-     padding-left: 15px;
-     margin-right: auto;
-     margin-left: auto;
+export const DescriptionData = styled.div`
+     display: grid;
+     grid-template-rows: 0fr 0fr 0fr 0fr;
+     align-items: center;
+`;
+
+export const DescriptionDataTitle = styled.div`
+     grid-row: auto;
+     text-transform: capitalize;
+     font-size: 40px;
+     margin-top: 10px;
+     margin-bottom: 10px;
+`;
+
+export const DescriptionDataNumbers = styled.div`
+     grid-row: auto;
+     display: grid;
+     grid-template-columns: 0fr 0fr 0fr 0fr;
+     margin-top: 10px;
+     margin-bottom: 10px;
+`;
+
+export const Blocke = styled.div`
+     display: flex;
+     padding: 0px 20px 0px 20px;
+`;
+
+
+export const DescriptionDescription = styled.div`
+     margin-top: 10px;
+     margin-bottom: 10px;
+     font-size: 13px;
+`;
+
+export const DescriptionDataGenres = styled.div`
+     display: grid;
+     grid-row: auto;
+     margin-top: 10px;
+     margin-bottom: 10px;
+`;
+
+export const DescriptionDataFavorite = styled.div`
+     grid-row: auto;
 `;
 
 export const ShowRow = styled.div`
@@ -35,38 +77,21 @@ export const ShowRow = styled.div`
      }
 `;
 
-type ColProps = {
-     size?: number;
-};
-
-export const Col = styled.div<ColProps>`
-     flex: ${(props) => props.size};
-`;
 
 export const ShowBox = styled.div`
-  background: #fff;
-  margin: 0;
   height: auto;
   float: left;
   overflow: hidden;
   display: block;
-  margin-bottom: 30px;
   margin-right: 20px;
+  margin-left: 30px;
   position: relative;
   box-shadow: 4px 4px 5px rgb(0 0 0 / 22%);
   border-radius: 7px;
-  padding: 0;
-  flex-shrink: 0;
   scroll-behavior: smooth;
-`;
-
-export const ImageContainer = styled.div`
-  margin-left: 0;
-  min-width: 100%;
-  overflow: hidden;
-  background: #2f3238;
-  float: none;
-  transition: opacity 0.35s, transform 0.35s;
+  min-width: 280px;
+  max-width: 280px;
+  max-height: 400px;
 `;
 
 export const PosterImage = styled.img`
@@ -79,7 +104,6 @@ export const PosterImage = styled.img`
   min-width: 100%;
   height: 400px;
   position: relative;
-  max-width: none;
   margin-left: 0;
   transform: scale(1);
   transition: 0.9s;
@@ -127,6 +151,7 @@ export const LabelWithTumbs = styled.div`
      margin: 0;
      padding: 0;
      position: relative;
+     margin-left: 30px;
      line-height: 1.4em;
      display: flex;
      overflow-x: auto;
