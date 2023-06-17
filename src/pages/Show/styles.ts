@@ -84,6 +84,7 @@ export const ShowBox = styled.div`
   overflow: hidden;
   display: block;
   margin-right: 20px;
+  margin-left: 30px;
   position: relative;
   box-shadow: 4px 4px 5px rgb(0 0 0 / 22%);
   border-radius: 7px;
@@ -150,6 +151,7 @@ export const LabelWithTumbs = styled.div`
      margin: 0;
      padding: 0;
      position: relative;
+     margin-left: 30px;
      line-height: 1.4em;
      display: flex;
      overflow-x: auto;
