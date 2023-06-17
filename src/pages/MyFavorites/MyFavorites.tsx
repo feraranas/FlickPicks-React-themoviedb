@@ -56,7 +56,7 @@ const MyFavorites = () => {
     <App>
       <BodyWrapper>
         <Header>
-          <ShowsTitle>POPULAR</ShowsTitle>
+          <ShowsTitle>MY FAVORITES</ShowsTitle>
           <Botones>
             <SortByName ><SortByAlphaIcon fontSize='small' />Sort by Name</SortByName>
             <SortByCalification ><SortIcon fontSize='small' />Sort by Calification</SortByCalification>
