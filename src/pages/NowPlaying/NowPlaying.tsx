@@ -7,6 +7,8 @@ import {
   ShowsTitle,
   Movies,
   Botones,
+  SearchBar,
+  Input,
   SortByName,
   MovieSlider,
   SortByCalification,
@@ -52,6 +54,9 @@ const NowPlaying = () => {
             <SortByCalification><SortIcon fontSize='small' />Sort by Calification</SortByCalification>
           </Botones>
         </Header>
+        <SearchBar>
+            <Input type="text" className='Input' placeholder="Search" />
+        </SearchBar>
         <Movies>
           <MovieSlider>
             {!loading ? (
