@@ -7,7 +7,7 @@ For it to work, you must extract an API from https://www.themoviedb.org/
 
 ### `touch .env`
 
-Inside .env paste : REACT_APP_MDB_API_KEY=<YOUR_API_KEY>
+Inside .env paste : `REACT_APP_MDB_API_KEY=<YOUR_API_KEY>`
 
 ### `yarn install`
 
