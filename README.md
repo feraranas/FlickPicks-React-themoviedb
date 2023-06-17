@@ -1,7 +1,7 @@
 # FlickPicks + React + themoviedb
 Just a simple website that connects to Themoviedb API
 
-For it to work, you must extract an API from https://www.themoviedb.org/
+#### For it to work, you must extract an API from https://www.themoviedb.org/
 
 #### In the project directory, you can run:
 
