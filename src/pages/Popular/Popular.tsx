@@ -6,9 +6,9 @@ import {
   Header,
   ShowsTitle,
   Movies,
-  Titulo,
-  DivTitulo,
   Botones,
+  SearchBar,
+  Input,
   SortByName,
   MovieSlider,
   SortByCalification,
@@ -30,6 +30,7 @@ const Popular = () => {
       .then((res) => {
         if (res && res.data) {
           setPopularMovies(res.data.results);
+          console.log(res.data.results);
         }
       })
       .catch((err) => {
@@ -55,6 +56,9 @@ const Popular = () => {
             <SortByCalification><SortIcon fontSize='small' />Sort by Calification</SortByCalification>
           </Botones>
         </Header>
+        <SearchBar>
+            <Input type="text" className='Input' placeholder="Search" />
+        </SearchBar>
         <Movies>
           <MovieSlider>
             {!loading ? (
