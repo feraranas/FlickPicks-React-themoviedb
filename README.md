@@ -24,3 +24,9 @@ Inside .env paste : `REACT_APP_MDB_API_KEY=<YOUR_API_KEY>`
 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+
+Results
+<img width="600px" height="600px" src="./Photos/3.png" alt="imgWebpage">
+<img width="600px" height="600px" src="./Photos/4.png" alt="imgWebpage">
+<img width="600px" height="600px" src="./Photos/5.png" alt="imgWebpage">
+<img width="600px" height="600px" src="./Photos/6.png" alt="imgWebpage">
