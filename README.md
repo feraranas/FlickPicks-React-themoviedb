@@ -18,6 +18,8 @@ Just a simple website that connects to Themoviedb API
 
 Inside .env paste : `REACT_APP_MDB_API_KEY=<YOUR_API_KEY>`
 
+save and then in terminal run:
+
 ### `yarn install`
 
 ### `yarn start`
